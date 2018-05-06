@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <title>Welcome to Outdoor Adventures Store</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- navbar from Bootstrap -->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <a class="navbar-brand" href="index.html">
+                <img class="img-fluid" src="images/LogoMakr_6NtMtS.png" width="200" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">About Outdoor Adventures</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Browse Our Collection</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Login</a>
+                    </li>
+
+                </ul>
+
+                <a class="navbar-brand" href="index.html">
+                    <!--link to login page-->
+
+                    <img class="img-fluid" src="images/user-2160923_1280.png" width="100" /></a>
+
+            </div>
+        </nav>
+
+        <div>&nbsp;</div>
+
+        <!-- Jumbotron -->
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Outdoor Adventures Store</h1>
+            <p class="lead">A premier store catering for sports-related equipment and clothing</p>
+
+        </div>
+
+        <!-- Text -->
+        <div class="row">
+            <div class="col-lg-8 text-justify">
+                <p>
+                    <h2 id="userwelcomemessage">Welcome Guest!</h2>
+                    <!--<br />-->
+                    https://www.w3schools.com/bootstrap/bootstrap_glyphicons.asp
+
+
+                    <!-- https://getbootstrap.com/docs/4.1/components/forms/ -->
+                    <form>
+                        <div class="form-group">
+                            <label for="LoginEmail1">Email address</label>
+                            <input type="email" class="form-control" id="LoginEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="LoginPassword1">Password</label>
+                            <input type="password" class="form-control" id="LoginPassword1" placeholder="Password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="LoginSubmit" onclick="user_login();">Submit</button>
+                    </form>
+
+                </p>
+            </div>
+
+            <!--side box-->
+            <div class="col-lg-4">
+
+                <div class="card bg-success text-white">
+                    <img class="card-img-top" src="images/credit-card-851506_1920.jpg" alt="Trust in our shopping" class="img-fluid">
+                    <div class="card-body">
+                        <h5 class="card-title">Trust our shopping</h5>
+                        <p class="card-text">At Outdoor Adventures, your security is our top priority. We used enterprise-grade encryption to ensure your login details are secure. However, our security measures are only as strong as our customers'. We will never contact you asking for credit card or login details. Please don't share or write down your password.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+<script>
+
+    // pseudo-code - if not logged in, display 'Welcome Guest'; otherwise, 'Welcome <username>'
+    // for logging in:
+    // 1. take user name and password and match it to DB with PHP or MySQL
+    //          a. based on the username, read the hashed(?) password and see if it matches the entered password
+    // 2. if user exists and password is correct, then display hello message (to satisfy the project requirement, change styling as well with DOM)
+    //          a. if password is not correct, then alert('wrong password')
+    // 3. if user doesn't exist, then reload the current webpage and let them know some details are wrong etc.
+
+    // also need a Register webpage where user can register themselves
+    // 1. write to DB
+
+    function user_login() {
+
+        // alert(width * height);
+        //return width * height;
+        //user_email = document.getElementById('LoginEmail1').value;
+        //user_password = document.getElementById('LoginPassword1').value;
+        ////alert(user_email + ' ' + user_password);
+
+        //alert(document.getElementById('userwelcomemessage').innerHTML);
+        //document.getElementById('userwelcomemessage').innerHTML = user_email;
+
+        // after Submit button is pressed, the webpage refreshes so not possible to use the .innerHTML property to set text etc.
+
+    }
+</script>
+</html>
