@@ -4,9 +4,13 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
+    <!-- Bootstrap via CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- js-cookie plugin: simplifies handling cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
     <title>Welcome to Outdoor Adventures Store</title>
 </head>
@@ -35,17 +39,20 @@
                         <a class="nav-link" href="collections.html">Browse Our Collection</a>
                     </li>
 
+
+
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Login</a>
+                        <!-- read this from cookie set by the PHP script -->
+                        <a class="nav-link disabled" href="#" id="welcome_message">Welcome Guest!</a>
                     </li>
 
-                    <li class="nav-item"> <!-- read this from cookie set by the PHP script -->
-                        <a class="nav-link disabled" href="#">Welcome Guest!</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="login-logout" href="login.php">Login</a>
                     </li>
 
                 </ul>
 
-                <a class="navbar-brand" href="login.html">
+                <a class="navbar-brand" href="login.php">
                     <!--link to login page-->
 
                     <img class="img-fluid" src="images/user-2160923_1280.png" width="100" /></a>
@@ -77,7 +84,7 @@
 
                     <h2>Our Collection</h2>
 
-                    XXXX
+                    The secret to our extremely low prices? We obtain our merchandise directly from the manufacturers, cutting down on the middle-man costs. We carry brands such as Helly Hansen, Craghoppers and Karrimor. Can't find what you need? Contact us for a custom order where we will source it for you from less-mainstream brands.
                     <br />
                     <br />
 
@@ -106,4 +113,25 @@
             </div>
         </div>
 </body>
+
+<script>
+
+    // read cookie value - if empty, welcome_message = Welcome Guest
+    // if not empty, welcome_message = Welcome back (firstname?)
+
+    var username = Cookies.get('user'); // using js-cookie plugin - returns 'firstname+lastname'
+    username = username.split('+')[0]; // we want only the first name, so split and get the first element in the resulting array
+
+    if (username != "") {
+        document.getElementById('welcome_message').innerHTML = 'Welcome back ' + username + '!';
+        document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
+
+        //<a class="nav-link"  href="login.php">Login</a>
+
+    } else {
+        document.getElementById('welcome_message').innerHTML = 'Welcome Guest!';
+    }
+
+
+</script>
 </html>
