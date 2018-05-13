@@ -54,7 +54,7 @@ restore_error_handler();
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Browse Our Collection</a>
+                        <a class="nav-link" href="collections.php">Browse Our Collection</a>
                     </li>
 
                     <li class="nav-item">
@@ -87,9 +87,7 @@ restore_error_handler();
                     <h2 id="userwelcomemessage">Welcome Guest!</h2>
                     <h5 id="login_state"><?php echo $login_state; ?></h5>
                     <!--<br />-->
-                    https://www.w3schools.com/bootstrap/bootstrap_glyphicons.asp
-
-
+                    
                     <!-- https://getbootstrap.com/docs/4.1/components/forms/ -->
                     <form action="login_process.php" method="post">
                         <div class="form-group">
@@ -129,62 +127,5 @@ restore_error_handler();
     
 </body>
 
-<script>
 
-    // pseudo-code - if not logged in, display 'Welcome Guest'; otherwise, 'Welcome <username>'
-    // for logging in:
-    // 1. take user name and password and match it to DB with PHP or MySQL
-    //          a. based on the username, read the hashed(?) password and see if it matches the entered password
-    // 2. if user exists and password is correct, then display hello message (to satisfy the project requirement, change styling as well with DOM)
-    //          a. if password is not correct, then alert('wrong password')
-    // 3. if user doesn't exist, then reload the current webpage and let them know some details are wrong etc.
-
-    // also need a Register webpage (register.html - created) where user can register themselves
-    // 1. write to DB
-
-    //    username 	password 	
-    //admin@outdoor-adventures.com 	123
-
-    // https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload - function to ask user to confirm before refreshing/moving to a different page
-    //window.addEventListener("beforeunload", function (event) {
-    //    event.returnValue = "\o/";
-    //});
-
-    //// is equivalent to
-    //window.addEventListener("beforeunload", function (event) {
-    //    event.preventDefault();
-    //});
-
-    // read cookie value
-    //var username = document.cookie
-
-    //if (username != null) {
-    //    document.getElementById('userwelcomemessage').innerHTML = 'Welcome ' + document.cookie
-    //}
-
-
-
-    //function user_login() {
-
-    //    var entered_email = document.getElementById('LoginEmail1').value;
-    //    var entered_password = document.getElementById('LoginPassword1').value;
-
-    //    // SQL code: SELECT email, real_name, password FROM login_details WHERE email='entered_email'
-    //    // if password == entered_password, then write cookie
-
-
-
-    //    if ((document.getElementById('LoginEmail1').value == 'admin@outdoor-adventures.com') && (document.getElementById('LoginPassword1').value == 123)) {
-    //        alert('Logged in');
-    //        // write cookie
-    //        document.cookie = "username=" + document.getElementById('LoginEmail1').value
-    //        window.open('index.html', '_self'); // upon successful login, redirect to homepage - is this needed?
-
-    //    } else {
-    //        alert('Incorrect details - please re-enter your login information');
-    //    }
-    //}
-
-
-</script>
 </html>
