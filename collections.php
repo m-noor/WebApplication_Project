@@ -179,13 +179,14 @@
 		echo "<table class='table table-striped table-borderless table-hover table-responsive' id='products_from_DB'>";
 
 		while ($row = mysqli_fetch_array($result)) {
-			echo "<tr>";
+			echo "<tr id='" . $row['product_ID'] . "'>"; // we use product_ID as an identifier for JS function below for shopping cart
 			echo "<td><img class='img-fluid rounded' src='images/products/" . $row['image_name'] . "'/></td>";
 			echo "<td>" . $row['product_description'] . "</td>";
 			echo "<td  class='col-sm-6'>€ " . $row['price'];
 			echo "<br>";
 			echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2'>";
-			echo "&nbsp; <button type='button' class='btn btn-warning' onclick='add_items_to_cart();'>Add</button>";
+			//echo "&nbsp; <button class='btn btn-warning' onclick=add_items_to_cart();>Add</button>"; //removed type='button'
+			echo "&nbsp; <button onclick=add_items_to_cart();>Add</button>";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -228,12 +229,54 @@
 	var cell4_deleteItem_button = row.insertCell(3);
 
 	// Add some text to the new cells based on table id='products_from_DB': https://stackoverflow.com/questions/4253558/get-a-particular-cell-value-from-html-table-using-javascript
-	cell1_item.innerHTML = "NEW CELL1"; // get text from column 2 corresponding to the row where this button is
+	//cell1_item.innerHTML = "NEW CELL1"; // get text from column 2 corresponding to the row where this button is
+	//cell1_item.innerHTML = document.getElementById('shopping_cart').getElementByTagName('td')[1].innerText; // get text from column 2 corresponding to the row where this button is
+
+	//alert(document.getElementById('products_from_DB'));
+	
+
+
+	// ~~~~~~~~~~~~~~~~~~  working on 14May @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	var Row = document.getElementById('products_from_DB');
+	var Cells = Row.getElementsByTagName("td");
+	//alert(Cells[1].innerText);
+	alert(Row.parentNode.innerText); // returns everything from products_from_DB. parentNode.parentNode.innerText returns all from both tables
+	alert(Cells[1].innerText);
+
+	// ~~~~~~~~~~~~~~~~~~  working on 14May @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+	//cell1_item.innerHTML = document.getElementById('products_from_DB').this.parentNode; // if still doesn't work, consider using a cookie
+	
+
+
+
+
 	cell2_quantity.innerHTML = "NEW CELL2"; // text from column 3, strip the value into 2 and get only the number
 	cell3_price.innerHTML = "NEW CELL3"; //  text from 
 	//cell4_deleteItem_button.innerHTML = "<button type='button' class='button' id='delete_button' onclick='delete_current_row(this);'>X</button>"; // although don't really need a button for onclick method
 	
 	cell4_deleteItem_button.innerHTML = "<button onclick=document.getElementById('shopping_cart').deleteRow(this.parentNode.parentNode.rowIndex);>XX</button>";
+
+	// ******************* -- for 14May -- ***************************************
+	//	alert(document.getElementById("1").getElementsByTagName("td")[1].innerText); // this works but only if elementID etc are known
+	//button_location = this.parentNode.parentNode.;
+	//alert(document.getElementById('shopping_cart').rowIndex);
+	
+	//cell1_item.innerHTML = document.getElementById(this.parentNode.rowIndex).getElementsByTagName("td")[1].innerText;
+
+	
+
+	//alert(document.getElementById('products_from_DB').rows[this.rowIndex].cells[1].firstChild.data);
+	//var Row = document.getElementById(this.rowIndex);
+	//var Cells = Row.getElementsByTagName("td");
+	//alert(Cells[0].innerText);
+	//cell1_item.innerHTML = document.getElementById('shopping_cart').this.parentNode.parentNode.rowIndex;
+	
+	//alert(this.parentNode);
+
+
+	// **********************************************************
 
 	
 	// https://www.w3schools.com/code/tryit.asp?filename=FR06TJBFRR2O
