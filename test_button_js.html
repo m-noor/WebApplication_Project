@@ -4,7 +4,14 @@
 <tr>
 <td> row1, col1</td>
 <td> <button onclick='getmylocation();'>Click</button></td>
-</tr></table>
+</tr>
+
+<tr>
+<td> row2, col1</td>
+<td> <button onclick='getmylocation();'>Click</button></td>
+</tr>
+
+</table>
 
 <br>
 
@@ -21,14 +28,14 @@
 function getmylocation(){
 
 var Row = document.getElementById('table1');
-var Cells = Row.getElementsByTagName("tr");
+var Cells = Row.getElementsByTagName("td");
 //alert(Row.parentNode.innerText);
-alert(Cells[0].innerHTML);
+//alert(Cells[0].innerHTML);
 //alert(Cells[this.rowIndex].innerText);
 
 var RowToChange = document.getElementById('table2');
 var CellsToChange = RowToChange.getElementsByTagName("tr");
-CellsToChange[0].innerText = Cells[0].innerText;
+CellsToChange[0].innerText = Cells[this.rowIndex].innerText;
 
 }
 
