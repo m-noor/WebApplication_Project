@@ -1,0 +1,38 @@
+<html>
+<body>
+<table id='table1'>
+<tr>
+<td> row1, col1</td>
+<td> <button onclick='getmylocation();'>Click</button></td>
+</tr></table>
+
+<br>
+
+<table id='table2'>
+<tr>
+<td> empty1</td>
+<td>empty2</td>
+</tr></table>
+
+</body>
+
+<script>
+
+function getmylocation(){
+
+var Row = document.getElementById('table1');
+var Cells = Row.getElementsByTagName("tr");
+//alert(Row.parentNode.innerText);
+alert(Cells[0].innerHTML);
+//alert(Cells[this.rowIndex].innerText);
+
+var RowToChange = document.getElementById('table2');
+var CellsToChange = RowToChange.getElementsByTagName("tr");
+CellsToChange[0].innerText = Cells[0].innerText;
+
+}
+
+
+</script>
+
+</html>
