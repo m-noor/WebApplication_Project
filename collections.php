@@ -140,7 +140,7 @@
 							<table class="table" id="shopping_cart">
 								<th>Item</th>
 								<th>Quantity</th>
-								<th>Price</th>
+								<th>Price (€)</th>
 								<th></th>
 							</table>
 						</p>
@@ -184,9 +184,9 @@
 			echo "<td>" . $row['product_description'] . "</td>";
 			echo "<td  class='col-sm-6'>€ " . $row['price'];
 			echo "<br>";
-			echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2'>";
-			//echo "&nbsp; <button class='btn btn-warning' onclick=add_items_to_cart();>Add</button>"; //removed type='button'
-			echo "&nbsp; <button onclick=add_items_to_cart();>Add</button>";
+			echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2' id='quantity'>";
+			//echo "&nbsp; <button class='btn btn-warning' onclick='add_items_to_cart.call(this);'>Add</button>"; //removed type='button'
+			echo "&nbsp; <button onclick=add_items_to_cart.call(this);>Add</button>";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -229,55 +229,33 @@
 	var cell4_deleteItem_button = row.insertCell(3);
 
 	// Add some text to the new cells based on table id='products_from_DB': https://stackoverflow.com/questions/4253558/get-a-particular-cell-value-from-html-table-using-javascript
-	//cell1_item.innerHTML = "NEW CELL1"; // get text from column 2 corresponding to the row where this button is
-	//cell1_item.innerHTML = document.getElementById('shopping_cart').getElementByTagName('td')[1].innerText; // get text from column 2 corresponding to the row where this button is
 
-	//alert(document.getElementById('products_from_DB'));
+	//cell1_item.innerHTML = document.getElementById('shopping_cart').getElementByTagName('td')[1].innerText; // get text from column 2 corresponding to the row where this button is	
+
+	cell1_item.innerHTML = this.parentNode.parentNode.childNodes[1].innerHTML; // //for text in adjacent cell. also possible to use previous/next sibling properties
+	// https://stackoverflow.com/questions/48468396/javascript-get-the-text-in-a-particular-table-cell-in-this-row
+
+	//var MyCell = this.closest('td');
+	//alert('mycellindex: ' + MyCell.cellIndex); // to find tr.rowIndex. can also use td.cellIndex to get cell value (document.getElementById('table2').getElementsByTagName('tr')[MyCell.rowIndex].innerText);
+	//alert('cell innertext: ' + this.closest('td').innerHTML); // this returns text in current cell but needs some stripping
+
 	
+	//cell2_quantity.innerHTML = "NEW CELL2"; // text from column 3, strip the value into 2 and get only the number
+	cell3_price.innerHTML = this.closest('td').innerText.split(' ')[1];
 
-
-	// ~~~~~~~~~~~~~~~~~~  working on 14May @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	var Row = document.getElementById('products_from_DB');
-	var Cells = Row.getElementsByTagName("td");
-	//alert(Cells[1].innerText);
-	alert(Row.parentNode.innerText); // returns everything from products_from_DB. parentNode.parentNode.innerText returns all from both tables
-	alert(Cells[1].innerText);
-
-	// ~~~~~~~~~~~~~~~~~~  working on 14May @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-	//cell1_item.innerHTML = document.getElementById('products_from_DB').this.parentNode; // if still doesn't work, consider using a cookie
+	// @@@@@@@@@@@@@@@@@@@@@@@@@- WIP on 18May - try using getElementById
+	//alert(this.parentNode.parentNode.childNodes[2].innerText); // returns '€ 20 add'
+	//alert(this.parentNode.parentNode.childNodes[2].innerHTML); // returns € 30<br><input placeholder="1" class="form-control-sm col-sm-2" id="quantity" type="number">&nbsp; <button onclick="add_items_to_cart.call(this);">Add</button>
 	
+	alert(this.closest('td').childNodes[2].value); // works :)
 
-
-
-
-	cell2_quantity.innerHTML = "NEW CELL2"; // text from column 3, strip the value into 2 and get only the number
-	cell3_price.innerHTML = "NEW CELL3"; //  text from 
+	
+	cell2_quantity.innerHTML = "NEW CELL3"; //  text from 
 	//cell4_deleteItem_button.innerHTML = "<button type='button' class='button' id='delete_button' onclick='delete_current_row(this);'>X</button>"; // although don't really need a button for onclick method
 	
 	cell4_deleteItem_button.innerHTML = "<button onclick=document.getElementById('shopping_cart').deleteRow(this.parentNode.parentNode.rowIndex);>XX</button>";
 
-	// ******************* -- for 14May -- ***************************************
-	//	alert(document.getElementById("1").getElementsByTagName("td")[1].innerText); // this works but only if elementID etc are known
-	//button_location = this.parentNode.parentNode.;
-	//alert(document.getElementById('shopping_cart').rowIndex);
 	
-	//cell1_item.innerHTML = document.getElementById(this.parentNode.rowIndex).getElementsByTagName("td")[1].innerText;
-
-	
-
-	//alert(document.getElementById('products_from_DB').rows[this.rowIndex].cells[1].firstChild.data);
-	//var Row = document.getElementById(this.rowIndex);
-	//var Cells = Row.getElementsByTagName("td");
-	//alert(Cells[0].innerText);
-	//cell1_item.innerHTML = document.getElementById('shopping_cart').this.parentNode.parentNode.rowIndex;
-	
-	//alert(this.parentNode);
-
-
-	// **********************************************************
-
 	
 	// https://www.w3schools.com/code/tryit.asp?filename=FR06TJBFRR2O
 	// https://stackoverflow.com/questions/36563108/how-can-i-convert-object-htmlbuttonelement-to-html-button
