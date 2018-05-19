@@ -8,6 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	
 
     <title>Welcome to Outdoor Adventures Store</title>
 
@@ -130,14 +131,14 @@
 		</div>
 
 		<div class="row">
-		    <!--side box-->
+		    <!--side box for shopping_cart-->
 			<div class="col-sm-3">
 				<div class="card bg-success text-white">
 					<img class="card-img-top" src="images/shopping.png" alt="Your cart" class="img-fluid">
 					<div class="card-body">
 						<h5 class="card-title">Your cart</h5>
 						<p class="card-text">
-							<table class="table" id="shopping_cart">
+							<table class="table table-responsive table-sm" id="shopping_cart" onkeyup="alert('changed');">
 								<th>Item</th>
 								<th>Quantity</th>
 								<th>Price (€)</th>
@@ -184,9 +185,20 @@
 			echo "<td>" . $row['product_description'] . "</td>";
 			echo "<td  class='col-sm-6'>€ " . $row['price'];
 			echo "<br>";
-			echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2' id='quantity'>";
-			//echo "&nbsp; <button class='btn btn-warning' onclick='add_items_to_cart.call(this);'>Add</button>"; //removed type='button'
-			echo "&nbsp; <button onclick=add_items_to_cart.call(this);>Add</button>";
+			//echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2' min='1' step='1'>"; //using input allows non-numeric entry with a bit more validation being required. instead, just use select as is done on amazon
+			echo "<select class='selectpicker'>
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+				</select>";
+			echo "&nbsp; <button class='btn btn-info' onclick=add_items_to_cart.call(this);>Add</button>";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -212,62 +224,105 @@
 <script>
 
 	function add_items_to_cart(){
-	// 1. add Item/Quantity/Price based on displayed texts to shopping cart
-	// 2. as the text in shopping cart changes, recalculate the total price
+		// 1. add Item/Quantity/Price based on displayed texts to shopping cart == DONE
+		// 2. as the text in shopping cart changes, recalculate the total price
 	
-	// For this assignment, 'purchase' can mean that the user is presented with the possibility to choose a product or item, select a quantity, and if the purchased button is clicked, they will be presented with a total cost.
+		// For this assignment, 'purchase' can mean that the user is presented with the possibility to choose a product or item, select a quantity, and if the purchased button is clicked, they will be presented with a total cost.
 
-	var table = document.getElementById('shopping_cart');
+		var table = document.getElementById('shopping_cart');
 
-	// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
-	var row = table.insertRow(-1);
+		// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
+		var row = table.insertRow(-1);
 	
-	// Insert new cells (<td> elements). browser compatibility: https://www.w3schools.com/jsref/met_table_insertrow.asp
-	var cell1_item = row.insertCell(0);
-	var cell2_quantity = row.insertCell(1);
-	var cell3_price = row.insertCell(2);
-	var cell4_deleteItem_button = row.insertCell(3);
+		// Insert new cells (<td> elements). browser compatibility: https://www.w3schools.com/jsref/met_table_insertrow.asp
+		var cell1_item = row.insertCell(0);
+		var cell2_quantity = row.insertCell(1);
+		var cell3_price = row.insertCell(2);
+		var cell4_deleteItem_button = row.insertCell(3);
 
-	// Add some text to the new cells based on table id='products_from_DB': https://stackoverflow.com/questions/4253558/get-a-particular-cell-value-from-html-table-using-javascript
+		// Add some text to the new cells based on table id='products_from_DB': https://stackoverflow.com/questions/4253558/get-a-particular-cell-value-from-html-table-using-javascript
 
-	//cell1_item.innerHTML = document.getElementById('shopping_cart').getElementByTagName('td')[1].innerText; // get text from column 2 corresponding to the row where this button is	
-
-	cell1_item.innerHTML = this.parentNode.parentNode.childNodes[1].innerHTML; // //for text in adjacent cell. also possible to use previous/next sibling properties
-	// https://stackoverflow.com/questions/48468396/javascript-get-the-text-in-a-particular-table-cell-in-this-row
-
-	//var MyCell = this.closest('td');
-	//alert('mycellindex: ' + MyCell.cellIndex); // to find tr.rowIndex. can also use td.cellIndex to get cell value (document.getElementById('table2').getElementsByTagName('tr')[MyCell.rowIndex].innerText);
-	//alert('cell innertext: ' + this.closest('td').innerHTML); // this returns text in current cell but needs some stripping
-
+		cell1_item.innerHTML = this.parentNode.parentNode.childNodes[1].innerHTML; // //for text in adjacent cell. also possible to use previous/next sibling properties
+		// https://stackoverflow.com/questions/48468396/javascript-get-the-text-in-a-particular-table-cell-in-this-row
 	
-	//cell2_quantity.innerHTML = "NEW CELL2"; // text from column 3, strip the value into 2 and get only the number
-	cell3_price.innerHTML = this.closest('td').innerText.split(' ')[1];
-
-	// @@@@@@@@@@@@@@@@@@@@@@@@@- WIP on 18May - try using getElementById
-	//alert(this.parentNode.parentNode.childNodes[2].innerText); // returns '€ 20 add'
-	//alert(this.parentNode.parentNode.childNodes[2].innerHTML); // returns € 30<br><input placeholder="1" class="form-control-sm col-sm-2" id="quantity" type="number">&nbsp; <button onclick="add_items_to_cart.call(this);">Add</button>
+		// from: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_option_index
 	
-	alert(this.closest('td').childNodes[2].value); // works :)
+		var x = this.closest('td').childNodes[2].selectedIndex;
+		var y = this.closest('td').childNodes[2].options;
+		cell2_quantity.innerText = y[x].text; // y[x].index returns the index of the selection option and .text returns the corresponding text
+
+		cell3_price.innerHTML = (this.closest('td').innerText.split(' ')[1]).split(/\n/)[0];
+
+		//cell4_deleteItem_button.innerHTML = "<button type='button' class='btn' id='delete_button' onclick='delete_current_row(this);'>X</button>"; // although don't really need a button for onclick method
+	
+		cell4_deleteItem_button.innerHTML = "<button class='btn btn-light btn-sm' onclick=shopping_cart_changed();&nbsp;document.getElementById(&#39;shopping_cart&#39;).deleteRow(this.parentNode.parentNode.rowIndex);>X</button>"; //needs escape characters here as this line is parsed by the browser into HTML first
 
 	
-	cell2_quantity.innerHTML = "NEW CELL3"; //  text from 
-	//cell4_deleteItem_button.innerHTML = "<button type='button' class='button' id='delete_button' onclick='delete_current_row(this);'>X</button>"; // although don't really need a button for onclick method
-	
-	cell4_deleteItem_button.innerHTML = "<button onclick=document.getElementById('shopping_cart').deleteRow(this.parentNode.parentNode.rowIndex);>XX</button>";
+		// check if 2 lines of the same item exist, in which case remove the first line of item
+		var text_to_search = this.parentNode.parentNode.childNodes[1].innerHTML;
+		var table_to_search = table;
 
-	
-	
-	// https://www.w3schools.com/code/tryit.asp?filename=FR06TJBFRR2O
-	// https://stackoverflow.com/questions/36563108/how-can-i-convert-object-htmlbuttonelement-to-html-button
 
-	// https://www.w3schools.com/jsref/met_document_createelement.asp
-	// delete row: https://www.w3schools.com/jsref/met_table_deleterow.asp
-	// http://www.encodedna.com/javascript/dynamically-create-html-elements-using-createElement-method.htm
-	// https://stackoverflow.com/questions/20786555/create-button-dynamically-and-assign-a-function-to-it
-	// https://stackoverflow.com/questions/28773281/how-to-dynamically-add-click-button-to-an-html-table-in-d3-js
+		//for each row in table, loop through the first column. if text_to_search is found, delete the row
+		var td_elements = table.getElementsByTagName('td'); //nodelist is not an array, so can't use .find method
+		var counter_rowIndex = [];
+
+		for (i = 0; i < td_elements.length; ) {
+		
+			if (td_elements[i].innerHTML == text_to_search){
+				// for the first encounter, append the rowIndex (which = i/4+1) to counter_rowIndex 
+				// after loop completion, if counter_rowIndex.length > 1, then delete the first element. don't worry about more than 2 elements because this function will be called after each 'Add' clicking
+				counter_rowIndex.push(i/4+1);
+			}
+		
+			i = i+4;
+		}
+	
+		if (counter_rowIndex.length > 1) {
+			table.deleteRow(counter_rowIndex[0]);
+			counter_rowIndex = []; // reset the array
+		} else {
+			counter_rowIndex = [];
+		}
+	
+
+		shopping_cart_changed();
+
 	}
 
 
+	function shopping_cart_changed(){
+		
+		var table = document.getElementById('shopping_cart');
+
+		if (table.rows.length > 1){ 
+		
+		// new thinking 19May: perhaps the best would be if row.length >= 2 inside the add_items_to_cart(), then and only add the TOTAL row.
+		// 
+		
+		// add a total row
+			// sum up the values in column 3 (index=2)
+
+			var table = document.getElementById('shopping_cart');
+
+			// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
+			var row = table.insertRow(-1);
+	
+			// Insert new cells (<td> elements). browser compatibility: https://www.w3schools.com/jsref/met_table_insertrow.asp
+			var cell1_total = row.insertCell(0);
+			var cell2_quantity = row.insertCell(1); // empty cell
+			var cell3_totalPrice = row.insertCell(2);
+			var cell4_checkout_button = row.insertCell(3);
+
+			cell1_total.innerHTML = '<i><b>TOTAL</b></i>';
+			cell3_totalPrice.innerHTML = 'total price';
+			cell4_checkout_button.innerHTML = 'checkout btn';
+
+			alert('row > 1');
+		}
+
+
+	}
 
 	
 	
