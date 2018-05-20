@@ -47,8 +47,6 @@
 		//echo mysqli_fetch_array($result)[1]; // this echoes correctly - can use either number [1] or associative ['email']
 		//echo $fetched_result['email'] . " " . $fetched_result['password'];
 		//setcookie("email",$fetched_result['email']);
-				
-		
 		
 		// 3 possible scenarios for validation
 		// (i) correct email and password
@@ -60,7 +58,7 @@
 			// send back to login.html with message 'User doesn't exist
 			//echo "User does not exist";
 
-			echo '<script type="text/javascript">';
+			echo '<script>';
 			echo 'window.open("login.php", "_self")';
 			echo '</script';
 					
@@ -77,7 +75,7 @@
 				setcookie("user", $fetched_result['real_name']); // write cookie
 				$login_state = "";
 
-				echo '<script type="text/javascript">';
+				echo '<script>';
 				echo 'window.open("index.html", "_self")'; // or better to redirect to collections.html? // redirect to index.html
 				echo '</script';
 
@@ -89,8 +87,6 @@
 				//$lines_string=implode('',$lines_array);
 				//output, you can also save it locally on the server
 				//echo $lines_string;
-
-
 				
 			} else {
 				//echo "Wrong password - try again";
@@ -99,7 +95,7 @@
 				// redirect to login.html with message
 				$login_state = "Wrong password - try again";
 				
-				echo '<script type="text/javascript">';
+				echo '<script>';
 				echo 'window.open("login.php", "_self")';
 				echo '</script';
 				
@@ -112,10 +108,7 @@
 		mysqli_free_result($result);		
 		mysqli_close($connection);
 		
-		
-		
 	?>
-
 
 <html>
 <body>

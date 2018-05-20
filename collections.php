@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	
+	 <!-- js-cookie plugin: simplifies handling cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
     <title>Welcome to Outdoor Adventures Store</title>
 
@@ -30,20 +32,28 @@
             background-image: none;
         }
 
-            .carousel-control-next-icon:after {
-                content: '>';
-                font-size: 55px;
-                color: red;
-            }
+        .carousel-control-next-icon:after {
+            content: '>';
+            font-size: 55px;
+            color: red;
+        }
 
-            .carousel-control-prev-icon:after {
-                content: '<';
-                font-size: 55px;
-                color: red;
-            }
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color: red;
+        }
+
+		.carousel-caption {
+			bottom: 0;
+			left: auto;
+			color: red;
+			font-size: 12px;
+			font-style: italic;
+		}
 
 		.table td {
-			text-align: center;   
+			text-align: center;
 		}
 
 		#products_from_DB .img-fluid{
@@ -63,7 +73,7 @@
 
         <!-- navbar from Bootstrap -->
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+       <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <a class="navbar-brand" href="index.html">
                 <img class="img-fluid" src="images/LogoMakr_6NtMtS.png" width="200" /></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,22 +83,25 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
 
-
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">About Outdoor Adventures</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="collections.html">Browse Our Collection</a>
+                        <a class="nav-link" href="collections.php">Browse Our Collection</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
+                        <!-- read this from cookie set by the PHP script -->
+                        <a class="nav-link disabled" href="#" id="welcome_message">Welcome Guest!</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" id="login-logout" href="login.php">Login</a>
+                    </li>
                 </ul>
 
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="login.php">
                     <!--link to login page-->
 
                     <img class="img-fluid" src="images/user-2160923_1280.png" width="100" /></a>
@@ -107,13 +120,22 @@
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-50" height="200px" src="images/credit-card-851506_1920.jpg" alt="First slide">
+                    <img class="d-block w-20" height="200px" src="images/carousel/compass.png" alt="Compass">
+					<div class="carousel-caption d-none d-md-block">
+						<p>Staff's Pick #1<br>Compass</p>
+					</div>
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-50" height="200px" src="images/girl-2940655_1920.jpg" alt="Second slide">
+                    <img class="d-block w-50" height="200px" src="images/carousel/hiking-shoes.jpg" alt="Hiking shoes">
+					<div class="carousel-caption d-none d-md-block">
+						<p>Staff's Pick #2<br>Hiking Shoes</p>
+					</div>
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-50" height="200px" src="images/sunset-3325079_1920.jpg" alt="Third slide">
+                    <img class="d-block w-50" height="200px" src="images/carousel/jackknife.jpg" alt="Jackknife">
+					<div class="carousel-caption d-none d-md-block">
+						<p>Staff's Pick #3<br>Jackknife</p>
+					</div>
                 </div>
             </div>
             <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
@@ -132,7 +154,7 @@
 
 		<div class="row">
 		    <!--side box for shopping_cart-->
-			<div class="col-sm-3">
+			<div class="col-sm-4">
 				<div class="card bg-success text-white">
 					<img class="card-img-top" src="images/shopping.png" alt="Your cart" class="img-fluid">
 					<div class="card-body">
@@ -175,15 +197,15 @@
 
 		//Step 3: User returned data
 
-		echo "<div class='col-sm-9'>";
+		echo "<div class='col-sm-8'>";
 	
-		echo "<table class='table table-striped table-borderless table-hover table-responsive' id='products_from_DB'>";
+		echo "<table class='table table-striped table-borderless table-hover table-responsive table-sm' id='products_from_DB'>";
 
 		while ($row = mysqli_fetch_array($result)) {
 			echo "<tr id='" . $row['product_ID'] . "'>"; // we use product_ID as an identifier for JS function below for shopping cart
-			echo "<td><img class='img-fluid rounded' src='images/products/" . $row['image_name'] . "'/></td>";
-			echo "<td>" . $row['product_description'] . "</td>";
-			echo "<td  class='col-sm-6'>€ " . $row['price'];
+			echo "<td class='col-sm-3'><a target='_blank' href='images/products/" . $row['image_name'] .  "'><img class='img-fluid rounded' src='images/products/" . $row['image_name'] . "'/></a></td>"; // make the img larger in a new tab. possible to also use modal window but needs extensive coding
+			echo "<td class='col-sm-2'>" . $row['product_description'] . "</td>";
+			echo "<td class='col-sm-3'>€ " . $row['price'];
 			echo "<br>";
 			//echo "<input type='number' placeholder='1' class='form-control-sm col-sm-2' min='1' step='1'>"; //using input allows non-numeric entry with a bit more validation being required. instead, just use select as is done on amazon
 			echo "<select class='selectpicker'>
@@ -222,6 +244,35 @@
 </body>
 
 <script>
+
+	// script (JQuery) for randomly displaying different images in carousel on page load
+	// call function only when the page is completely loaded (DOM and images)
+
+	var randomNumber = Math.floor(Math.random() * 3) + 0  // we want a randomNumber between 0 and 3 (we have only 3 images in carousel)
+
+	$(window).on('load', function(){
+		$("#carouselIndicators").carousel("pause");
+		$("#carouselIndicators").carousel(randomNumber);
+	});
+
+
+    // read cookie value - if empty, welcome_message = Welcome Guest
+    // if not empty, welcome_message = Welcome back (firstname?)
+
+    var username = Cookies.get('user'); // using js-cookie plugin - returns 'firstname+lastname'
+    username = username.split('+')[0]; // we want only the first name, so split and get the first element in the resulting array
+
+    if (username != "") {
+        document.getElementById('welcome_message').innerHTML = 'Welcome back ' + username + '!';
+        //document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
+             
+        //<a class="nav-link"  href="login.php">Login</a>
+
+        document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="#" onclick="Cookies.remove(&#39user&#39, { path: &#39&#39 }); location.reload()">Logout</a>';
+
+    } else {
+        document.getElementById('welcome_message').innerHTML = 'Welcome Guest!';
+    }
 
 	function add_items_to_cart(){
 		// 1. add Item/Quantity/Price based on displayed texts to shopping cart == DONE
@@ -284,10 +335,8 @@
 		} else {
 			counter_rowIndex = [];
 		}
-	
 
 		shopping_cart_changed();
-
 	}
 
 
@@ -295,22 +344,9 @@
 
 		// this function is called AFTER adding item and AFTER deleting item
 
-		// scenario 2: one item added for the second time - cart is now header+item1+item2+total (rows.length = 4)
-		// scenario 3: two items in the cart, one item removed - cart is now header+item1+total (rows.length=3)
-		// scenario 4: one item in the cart, one item removed - cart is now header+total (rows.length = 2)
-
-		// better approach: put an id to the total row. if it already exists then - (i) if there is no more item (rows.length=header+total=2), then remove total row as well, (ii) if there is something, then just leave it
-		// var row = table.insertRow(-1); tr.setAttribute("id", "totalRow", 0); //https://stackoverflow.com/questions/7160897/how-to-give-id-for-tablerow-using-insertrow
-		
-		//var table2 = document.getElementById('shopping_cart');
-		
-
 		if (document.getElementById('totalRow') == null){ // scenario 1: one item added for the first time - the only thing in cart is the header (rows.length = 1)
 			// i.e. there is only the header - after adding the item to cart, insert the TOTAL row
 			
-			// add a total row
-			// sum up the values in column 3 (index=2)
-
 			// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
 			var row = table.insertRow(table.rows.length);
 			row.setAttribute('id', 'totalRow', 0);
@@ -324,8 +360,8 @@
 			addUpItems();
 
 			cell1_total.innerHTML = '<i><b>TOTAL</b></i>';
-			cell3_totalPrice.innerHTML = totalPrice;
-			cell4_checkout_button.innerHTML = 'checkout btn';
+			cell3_totalPrice.innerHTML = '<i><b>' + totalPrice + '</b></i>';
+			cell4_checkout_button.innerHTML = "<button class='btn btn-primary btn-sm' onclick='checkOut();'>Checkout</button>";
 
 		} else if (table.rows.length >= 3) { // i.e. totalRow exists and there is header+item(s)+totalRow - don't add another totalRow
 			
@@ -344,8 +380,8 @@
 			addUpItems();
 
 			cell1_total.innerHTML = '<i><b>TOTAL</b></i>';
-			cell3_totalPrice.innerHTML = totalPrice;
-			cell4_checkout_button.innerHTML = 'checkout btn';
+			cell3_totalPrice.innerHTML = '<i><b>' + totalPrice + '</b></i>';
+			cell4_checkout_button.innerHTML = "<button class='btn btn-primary btn-sm' onclick='checkOut();'>Checkout</button>";
 				
 		} else if (table.rows.length == 2){ // there is only header+totalRow - no item, so delete totalRow
 				table.deleteRow(document.getElementById('totalRow').rowIndex);
@@ -357,7 +393,7 @@
 		totalPrice = 0; // global variable - need to pass this to cell3_totalPrice.innerHTML
 
 		// for each row, get the number from column1 ('quantity') and multiply with column2 ('price') to get the total per row
-		// loop above for the (rows.length - 2)
+		// loop above for the (rows.length - 2) because we don't need the header and totalRow
 
 		for (var i = 1; i < table.rows.length; i++) {
 			var quantity = table.rows[i].cells[1].innerHTML;
@@ -368,6 +404,22 @@
 
 	}
 
+	function checkOut(){
+		// if already logged in, alert(order has been placed)
+		// else -> open login.php in a new tab, let user login...
+
+		
+		// get the value of 'user' cookie if it exists, otherwise redirect user to login
+		// regex from https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+		
+		var	username = document.cookie.replace(/(?:(?:^|.*;\s*)user\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+		if (username != ''){
+			alert('You are already logged in. \nThis order has been placed on the system.\n\nThank you!');
+		} else {
+			window.open('login.php'); // let user login, place the cookie and return here
+		}
+	}
 	
 	
 

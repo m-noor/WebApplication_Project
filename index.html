@@ -36,10 +36,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="collections.html">Browse Our Collection</a>
+                        <a class="nav-link" href="collections.php">Browse Our Collection</a>
                     </li>
-
-
 
                     <li class="nav-item">
                         <!-- read this from cookie set by the PHP script -->
@@ -49,7 +47,6 @@
                     <li class="nav-item">
                         <a class="nav-link" id="login-logout" href="login.php">Login</a>
                     </li>
-
                 </ul>
 
                 <a class="navbar-brand" href="login.php">
@@ -81,21 +78,16 @@
                     <br />
                     <br />
 
-
-
                     <h2>Our Collection</h2>
 
                     The secret to our extremely low prices? We obtain our merchandise directly from the manufacturers, cutting down on the middle-man costs. We carry brands such as Helly Hansen, Craghoppers and Karrimor. Can't find what you need? Contact us for a custom order where we will source it for you from less-mainstream brands.
                     <br />
                     <br />
 
-
-
                     <h2>Our Guarantee</h2>
 
                     We guarantee every piece of clothing and equipment you buy from us, whether online or in store, comes with a 12-month warranty. It's broken? Come talk to us. Not happy? Get full refund, no question asked.<br />
                     <br />
-
 
                     <a href="#top"><i>Back to top</i></a>
                 </p>
@@ -126,9 +118,11 @@
 
     if (username != "") {
         document.getElementById('welcome_message').innerHTML = 'Welcome back ' + username + '!';
-        document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
-
+        //document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
+             
         //<a class="nav-link"  href="login.php">Login</a>
+
+        document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="#" onclick="Cookies.remove(&#39user&#39, { path: &#39&#39 }); location.reload()">Logout</a>';
 
     } else {
         document.getElementById('welcome_message').innerHTML = 'Welcome Guest!';

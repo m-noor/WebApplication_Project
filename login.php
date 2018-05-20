@@ -30,6 +30,9 @@ restore_error_handler();
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
+	<!-- js-cookie plugin: simplifies handling cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
     <title>Welcome to Outdoor Adventures Store</title>
 </head>
 <body>
@@ -47,8 +50,7 @@ restore_error_handler();
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-
-
+				
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">About Outdoor Adventures</a>
                     </li>
@@ -58,12 +60,16 @@ restore_error_handler();
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Login</a>
+                        <!-- read this from cookie set by the PHP script -->
+                        <a class="nav-link disabled" href="#" id="welcome_message">Welcome Guest!</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" id="login-logout" href="login.php">Login</a>
+                    </li>
                 </ul>
 
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="login.php">
                     <!--link to login page-->
 
                     <img class="img-fluid" src="images/user-2160923_1280.png" width="100" /></a>
@@ -93,14 +99,14 @@ restore_error_handler();
                         <div class="form-group">
                             <label for="LoginEmail1">Email address</label>
                             <input type="email" class="form-control" id="LoginEmail1" placeholder="Enter email" required="required" name="entered_email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.<br>For demo purposes, use email: tom_mckinsley@outdoor-adventures.com and password: abc</small>
                         </div>
                         <div class="form-group">
                             <label for="LoginPassword1">Password</label>
                             <input type="password" class="form-control" id="LoginPassword1" placeholder="Password" required="required" name="entered_password">
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block" onclick="user_login();">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button> <!--onclick="user_login();" -->
                         
                     </form>
 
@@ -109,7 +115,6 @@ restore_error_handler();
 
             <!--side box-->
             <div class="col-lg-4">
-
                 <div class="card bg-success text-white">
                     <img class="card-img-top" src="images/credit-card-851506_1920.jpg" alt="Trust in our shopping" class="img-fluid">
                     <div class="card-body">
@@ -127,5 +132,31 @@ restore_error_handler();
     
 </body>
 
+<script>
+
+	// read cookie value - if empty, welcome_message = Welcome Guest
+    // if not empty, welcome_message = Welcome back (firstname?)
+
+    var username = Cookies.get('user'); // using js-cookie plugin - returns 'firstname+lastname'
+    username = username.split('+')[0]; // we want only the first name, so split and get the first element in the resulting array
+
+    if (username != "") {
+        document.getElementById('welcome_message').innerHTML = 'Welcome back ' + username + '!';
+        //document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
+             
+        //<a class="nav-link"  href="login.php">Login</a>
+
+        document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="#" onclick="Cookies.remove(&#39user&#39, { path: &#39&#39 }); location.reload()">Logout</a>';
+
+    } else {
+        document.getElementById('welcome_message').innerHTML = 'Welcome Guest!';
+    }
+
+
+	function user_login(){
+		alert(LoginEmail1\nLoginPassword1);
+	}
+
+</script>
 
 </html>
