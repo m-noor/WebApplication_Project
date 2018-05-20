@@ -229,7 +229,7 @@
 	
 		// For this assignment, 'purchase' can mean that the user is presented with the possibility to choose a product or item, select a quantity, and if the purchased button is clicked, they will be presented with a total cost.
 
-		var table = document.getElementById('shopping_cart');
+		table = document.getElementById('shopping_cart'); // global variable to be accessible also by shopping_cart_changed()
 
 		// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
 		var row = table.insertRow(-1);
@@ -255,7 +255,7 @@
 
 		//cell4_deleteItem_button.innerHTML = "<button type='button' class='btn' id='delete_button' onclick='delete_current_row(this);'>X</button>"; // although don't really need a button for onclick method
 	
-		cell4_deleteItem_button.innerHTML = "<button class='btn btn-light btn-sm' onclick=shopping_cart_changed();&nbsp;document.getElementById(&#39;shopping_cart&#39;).deleteRow(this.parentNode.parentNode.rowIndex);>X</button>"; //needs escape characters here as this line is parsed by the browser into HTML first
+		cell4_deleteItem_button.innerHTML = "<button class='btn btn-light btn-sm' onclick=document.getElementById(&#39;shopping_cart&#39;).deleteRow(this.parentNode.parentNode.rowIndex);&nbsp;shopping_cart_changed();>X</button>"; //needs escape characters here as this line is parsed by the browser into HTML first
 
 	
 		// check if 2 lines of the same item exist, in which case remove the first line of item
@@ -292,21 +292,28 @@
 
 
 	function shopping_cart_changed(){
-		
-		var table = document.getElementById('shopping_cart');
 
-		if (table.rows.length > 1){ 
+		// this function is called AFTER adding item and AFTER deleting item
+
+		// scenario 2: one item added for the second time - cart is now header+item1+item2+total (rows.length = 4)
+		// scenario 3: two items in the cart, one item removed - cart is now header+item1+total (rows.length=3)
+		// scenario 4: one item in the cart, one item removed - cart is now header+total (rows.length = 2)
+
+		// better approach: put an id to the total row. if it already exists then - (i) if there is no more item (rows.length=header+total=2), then remove total row as well, (ii) if there is something, then just leave it
+		// var row = table.insertRow(-1); tr.setAttribute("id", "totalRow", 0); //https://stackoverflow.com/questions/7160897/how-to-give-id-for-tablerow-using-insertrow
 		
-		// new thinking 19May: perhaps the best would be if row.length >= 2 inside the add_items_to_cart(), then and only add the TOTAL row.
-		// 
+		//var table2 = document.getElementById('shopping_cart');
 		
-		// add a total row
+
+		if (document.getElementById('totalRow') == null){ // scenario 1: one item added for the first time - the only thing in cart is the header (rows.length = 1)
+			// i.e. there is only the header - after adding the item to cart, insert the TOTAL row
+			
+			// add a total row
 			// sum up the values in column 3 (index=2)
 
-			var table = document.getElementById('shopping_cart');
-
 			// Create an empty <tr> element. row(0) is the table header. we use (-1) to just item to the last position
-			var row = table.insertRow(-1);
+			var row = table.insertRow(table.rows.length);
+			row.setAttribute('id', 'totalRow', 0);
 	
 			// Insert new cells (<td> elements). browser compatibility: https://www.w3schools.com/jsref/met_table_insertrow.asp
 			var cell1_total = row.insertCell(0);
@@ -314,13 +321,50 @@
 			var cell3_totalPrice = row.insertCell(2);
 			var cell4_checkout_button = row.insertCell(3);
 
+			addUpItems();
+
 			cell1_total.innerHTML = '<i><b>TOTAL</b></i>';
-			cell3_totalPrice.innerHTML = 'total price';
+			cell3_totalPrice.innerHTML = totalPrice;
 			cell4_checkout_button.innerHTML = 'checkout btn';
 
-			alert('row > 1');
-		}
+		} else if (table.rows.length >= 3) { // i.e. totalRow exists and there is header+item(s)+totalRow - don't add another totalRow
+			
+			// table.moveRow method not supported by non-IE browsers - not W3C standard, so delete the current totalRow and add a new one as above
+			table.deleteRow(document.getElementById('totalRow').rowIndex);
 
+			var row = table.insertRow(table.rows.length);
+			row.setAttribute('id', 'totalRow', 0);
+	
+			// Insert new cells (<td> elements). browser compatibility: https://www.w3schools.com/jsref/met_table_insertrow.asp
+			var cell1_total = row.insertCell(0);
+			var cell2_quantity = row.insertCell(1); // empty cell
+			var cell3_totalPrice = row.insertCell(2);
+			var cell4_checkout_button = row.insertCell(3);
+
+			addUpItems();
+
+			cell1_total.innerHTML = '<i><b>TOTAL</b></i>';
+			cell3_totalPrice.innerHTML = totalPrice;
+			cell4_checkout_button.innerHTML = 'checkout btn';
+				
+		} else if (table.rows.length == 2){ // there is only header+totalRow - no item, so delete totalRow
+				table.deleteRow(document.getElementById('totalRow').rowIndex);
+		}
+	}
+
+	function addUpItems() {
+	
+		totalPrice = 0; // global variable - need to pass this to cell3_totalPrice.innerHTML
+
+		// for each row, get the number from column1 ('quantity') and multiply with column2 ('price') to get the total per row
+		// loop above for the (rows.length - 2)
+
+		for (var i = 1; i < table.rows.length; i++) {
+			var quantity = table.rows[i].cells[1].innerHTML;
+			var pricePerUnit = table.rows[i].cells[2].innerHTML;
+			var totalPerRow = quantity * pricePerUnit;
+			totalPrice = totalPrice + totalPerRow; 
+		}
 
 	}
 
