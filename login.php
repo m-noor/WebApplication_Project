@@ -5,7 +5,6 @@ session_start();
 set_error_handler('error_handler');
 $login_state = $_SESSION['login_state'];
 
-
 function error_handler($errno,$errstr)
   {
   /* handle the issue */
@@ -14,7 +13,6 @@ function error_handler($errno,$errstr)
   }
 
 restore_error_handler();
-
 
 ?>
 
@@ -95,7 +93,7 @@ restore_error_handler();
                     <!--<br />-->
                     
                     <!-- https://getbootstrap.com/docs/4.1/components/forms/ -->
-                    <form action="login_process.php" method="post">
+                    <form action="login_process.php" method="post"> <!-- ensure both email and password are entered before proceeding. also the email should be in the form of xxx@yyy.com. these are handled below by 'required' -->
                         <div class="form-group">
                             <label for="LoginEmail1">Email address</label>
                             <input type="email" class="form-control" id="LoginEmail1" placeholder="Enter email" required="required" name="entered_email">
@@ -106,7 +104,7 @@ restore_error_handler();
                             <input type="password" class="form-control" id="LoginPassword1" placeholder="Password" required="required" name="entered_password">
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button> <!--onclick="user_login();" -->
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         
                     </form>
 
@@ -135,14 +133,14 @@ restore_error_handler();
 <script>
 
 	// read cookie value - if empty, welcome_message = Welcome Guest
-    // if not empty, welcome_message = Welcome back (firstname?)
+    // if not empty, welcome_message = Welcome back (firstname)
 
     var username = Cookies.get('user'); // using js-cookie plugin - returns 'firstname+lastname'
     username = username.split('+')[0]; // we want only the first name, so split and get the first element in the resulting array
 
     if (username != "") {
         document.getElementById('welcome_message').innerHTML = 'Welcome back ' + username + '!';
-        //document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not used the class="nav-link" gives a nicer color and layout
+        //document.getElementById('login-logout').innerHTML = '<a id="login-logout" href="logout.html">Logout</a>'; // not using the class="nav-link" gives a nicer color and layout
              
         //<a class="nav-link"  href="login.php">Login</a>
 
@@ -151,11 +149,6 @@ restore_error_handler();
     } else {
         document.getElementById('welcome_message').innerHTML = 'Welcome Guest!';
     }
-
-
-	function user_login(){
-		alert(LoginEmail1\nLoginPassword1);
-	}
 
 </script>
 
